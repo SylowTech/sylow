@@ -193,3 +193,14 @@ export function revokeToken(req, res, next) {
     })
     .catch(next);
 }
+
+export function listSettings(req, res) {
+  return res.render('setting', { ctrl: 'setting', active: 'settings', settings: config });
+}
+
+export function updateSettings(req) {
+  // Include the right operation to write the new settings datas (to discuss..)
+  /* eslint-disable no-console */
+  console.log(req.body);
+  /* eslint-enable no-console */
+}

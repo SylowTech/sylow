@@ -6,6 +6,7 @@ import AppController from './controllers/app.controller';
 import ClientController from './controllers/client.controller';
 import EntityController from './controllers/entity.controller';
 import LoginController from './controllers/login.controller';
+import SettingController from './controllers/settings.controller';
 
 // import images so webpack will include them
 import './assets/images/logo-white.svg';
@@ -13,7 +14,8 @@ import './assets/images/logo-white.svg';
 const controllers = {
   client: ClientController,
   entity: EntityController,
-  login: LoginController
+  login: LoginController,
+  setting: SettingController
 };
 
 
