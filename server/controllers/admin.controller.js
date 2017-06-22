@@ -5,7 +5,7 @@ import Client from '../models/client.model';
 import Document from '../models/document.model';
 import Entity from '../models/entity.model';
 
-import config from '../../config/config';
+import { default as config, unvariableConfig } from '../../config/config';
 import APIError from '../helpers/APIError';
 import { randomStr } from '../utils/random';
 
@@ -195,12 +195,20 @@ export function revokeToken(req, res, next) {
 }
 
 export function listSettings(req, res) {
-  return res.render('setting', { ctrl: 'setting', active: 'settings', settings: config });
+  const settableConfig = {};
+  Object.keys(config).forEach((i) => {
+    if (!unvariableConfig.includes(i)) {
+      settableConfig[i] = config[i];
+    }
+  });
+  return res.render('setting', { ctrl: 'setting', active: 'settings', settings: settableConfig });
 }
 
-export function updateSettings(req) {
-  // Include the right operation to write the new settings datas (to discuss..)
-  /* eslint-disable no-console */
-  console.log(req.body);
-  /* eslint-enable no-console */
+export function updateSettings(req, res) {
+  const datas = req.body;
+  const schemaDomain = datas.schemaDomainWhitelist.filter(n => n !== '');
+  datas.schemaDomainWhitelist = schemaDomain;
+  const updatedConfig = Object.assign(config, datas); // eslint-disable-line no-unused-vars
+  req.flash('success', 'Settings updated');
+  return res.redirect('/settings');
 }
