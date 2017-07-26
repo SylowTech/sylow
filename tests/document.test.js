@@ -20,7 +20,11 @@ describe('## Document APIs', () => {
     data: {
       content: 'This is the first test status.'
     },
-    tags: ['1', '2', '3']
+    tags: {
+      'tagkey1': 'tagvalue1',
+      'tagkey2': 'tagvalue2',
+      'tagkey3': 'tagvalue3'
+    }
   };
 
   let document1 = {
@@ -30,7 +34,11 @@ describe('## Document APIs', () => {
     data: {
       content: 'This is the second test status.'
     },
-    tags: ['3', '4', '5']
+    tags: {
+      'tagkey3': 'tagvalue3',
+      'tagkey4': 'tagvalue4',
+      'tagkey5': 'tagvalue5'
+    }
   };
 
   let document2 = {
@@ -40,7 +48,11 @@ describe('## Document APIs', () => {
     data: {
       content: 'This is the third test status.'
     },
-    tags: ['3', '4', '5']
+    tags: {
+      'tagkey3': 'tagvalue3',
+      'tagkey4': 'tagvalue4',
+      'tagkey5': 'tagvalue5'
+    }
   };
 
   let entity;
