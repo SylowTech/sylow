@@ -44,6 +44,13 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 
+// WIP : wait for Server.getAuthoritative, use server uuid properly
+/*
+app.use((req, res, next) => {
+  res.setHeader('X-Sylow-Server', app.sylowServer);
+  next();
+});
+*/
 // secure apps by setting various HTTP headers
 app.use(helmet());
 
