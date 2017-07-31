@@ -170,9 +170,7 @@ function getActions(req, res, next) {
     const tk = Object.keys(tags);
     for (let i = 0; i < tk.length; i += 1) {
       const key = tk[i];
-      const obj = {};
-      obj[key] = tags[key];
-      filter.tags = { $elemMatch: obj };
+      filter[`tags.${key}`] = tags[key];
     }
   }
   if ('page' in query && finder.limit) {
