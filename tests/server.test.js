@@ -38,7 +38,7 @@ describe('## Server APIs', () => {
 
   let accessToken;
 
-  before('Clean up test data', () => 
+  before('Clean up test data', () =>
     createTokens().then(({ adminAccessToken }) => {
       accessToken = adminAccessToken;
     })
@@ -80,6 +80,18 @@ describe('## Server APIs', () => {
         .then((res) => {
           expect(res.body.name).to.equal(server.name);
           expect(res.body.domain).to.equal(server.domain);
+          done();
+        })
+        .catch(done);
+    });
+
+    it('should fail to get a nonexistent server', (done) => {
+      request(app)
+        .get('/api/servers/xxxxxx')
+        .set('Authorization', `Bearer ${accessToken.token}`)
+        .expect(httpStatus.NOT_FOUND)
+        .then((res) => {
+          expect(res.body.message).to.equal('Not Found');
           done();
         })
         .catch(done);
