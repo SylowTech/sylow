@@ -7,10 +7,16 @@ import AccessToken from '../models/accessToken.model';
 import Client from '../models/client.model';
 import Document from '../models/document.model';
 import Entity from '../models/entity.model';
+import Server from '../models/server.model';
 
 import config, { unvariableConfig } from '../../config/config';
 import APIError from '../helpers/APIError';
 import { randomStr } from '../utils/random';
+
+function handleMongooseError(req, res, err, redirectPath) {
+  req.flash('error', err.toString());
+  return res.redirect(redirectPath);
+}
 
 export function index(req, res, next) {
   const docTypes = Document.aggregate([{ $sortByCount: '$contentType' }]);
@@ -30,10 +36,7 @@ export function showEntity(req, res) {
     .then(([entity, tokens]) => res.render('entity', {
       ctrl: 'entity', active: 'entities', entity, tokens
     }))
-    .catch((err) => {
-      req.flash('error', err.toString());
-      return res.redirect('/entities');
-    });
+    .catch(err => handleMongooseError(req, res, err, '/entities'));
 }
 
 export function listEntities(req, res) {
@@ -65,10 +68,7 @@ export function createEntity(req, res) {
       req.flash('success', 'Entity created');
       return res.redirect('/entities');
     })
-    .catch((err) => {
-      req.flash('error', err.toString());
-      return res.redirect('/entities');
-    });
+    .catch(err => handleMongooseError(req, res, err, '/entities'));
 }
 
 export function updateEntity(req, res) {
@@ -86,12 +86,8 @@ export function updateEntity(req, res) {
       req.flash('success', 'Entity updated');
       return res.redirect(`/entities/${entity._id}`);
     })
-    .catch((err) => {
-      req.flash('error', err.toString());
-      return res.redirect('/entities');
-    });
+    .catch(err => handleMongooseError(req, res, err, '/entities'));
 }
-
 export function deleteEntity(req, res, next) {
   const _id = req.params.entityId;
   return Entity.remove({ _id })
@@ -110,10 +106,7 @@ export function showClient(req, res) {
     .then(client => res.render('client', {
       ctrl: 'client', active: 'clients', client
     }))
-    .catch((err) => {
-      req.flash('error', err.toString());
-      return res.redirect('/clients');
-    });
+    .catch(err => handleMongooseError(req, res, err, '/clients'));
 }
 
 export function listClients(req, res) {
@@ -145,10 +138,7 @@ export function createClient(req, res) {
       req.flash('success', 'Client created');
       return res.redirect('/clients');
     })
-    .catch((err) => {
-      req.flash('error', err.toString());
-      return res.redirect('/clients');
-    });
+    .catch(err => handleMongooseError(req, res, err, '/clients'));
 }
 
 export function updateClient(req, res) {
@@ -165,10 +155,7 @@ export function updateClient(req, res) {
       req.flash('success', 'Client updated');
       return res.redirect(`/clients/${client._id}`);
     })
-    .catch((err) => {
-      req.flash('error', err.toString());
-      return res.redirect('/clients');
-    });
+    .catch(err => handleMongooseError(req, res, err, '/clients'));
 }
 
 export function deleteClient(req, res, next) {
@@ -216,6 +203,7 @@ export function updateSettings(req, res) {
 
   Object.assign(config, inputDatas);
 
+  /* istanbul ignore if */
   if (config.env !== 'test') {
     return fs.open(envFile, fs.constants.R_OK || fs.constants.W_OK, (errOpen) => {
       if (errOpen) {
@@ -265,4 +253,59 @@ function getNewConfig(datas, settableConfig) {
     }
   }
   return newConfig;
+}
+
+export function listServers(req, res) {
+  Promise.all([
+    Server.findOne({ authoritative: true }), Server.find({ authoritative: false })
+  ])
+    .then(([authoritativeServer, otherServers]) => {
+      res.render('servers', {
+        ctrl: 'server', active: 'server', authoritativeServer, otherServers
+      });
+    })
+    .catch(err => handleMongooseError(req, res, err, '/servers'));
+}
+
+export function exportServer(req, res) {
+  return Server.get(req.params.serverId)
+    .then(server => res.json(server))
+    .catch(err => handleMongooseError(req, res, err, `/servers/${req.params.serverId}`));
+}
+
+export function showServer(req, res) {
+  return Server.get(req.params.serverId)
+    .then(server => res.render('server', {
+      ctrl: 'server', active: 'servers', server
+    }))
+    .catch(err => handleMongooseError(req, res, err, '/servers'));
+}
+
+export function deleteServer(req, res, next) {
+  const _id = req.params.serverId;
+  return Server.remove({ _id, authoritative: false })
+    .then((server) => {
+      if (!server || !server.result.n) {
+        const err = new APIError('Server does not exist', httpStatus.NOT_FOUND, true);
+        return next(err);
+      }
+      return res.sendStatus(httpStatus.NO_CONTENT);
+    })
+    .catch(next);
+}
+
+export function updateServer(req, res) {
+  const datas = {
+    name: req.body.name,
+    description: req.body.description
+  };
+
+  const id = req.params.serverId;
+
+  return Server.findByIdAndUpdate(id, { $set: datas })
+    .then(() => {
+      req.flash('success', 'Server updated');
+      return res.redirect(`/servers/${id}`);
+    })
+    .catch(err => handleMongooseError(req, res, err, `/servers/${id}`));
 }

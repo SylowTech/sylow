@@ -6,6 +6,7 @@ import idPlugin from './plugins/id';
 import createdPlugin from './plugins/created';
 import updatedPlugin from './plugins/updated';
 import APIError from '../helpers/APIError';
+import config from '../../config/config';
 
 /**
  * Server Storage Schema
@@ -103,6 +104,35 @@ ServerSchema.statics = {
       .skip(+skip)
       .limit(+limit)
       .exec();
+  },
+
+  /**
+   * Return the server marked as authoritative
+   * @returns {Promise<Server>}
+   */
+  getAuthoritative() {
+    return this.findOne({ authoritative: true })
+      .exec()
+      .then((server) => {
+        if (server) {
+          return server;
+        } else if (config.env === 'test') {
+          const datas = {
+            name: 'Sylow Test Server',
+            domain: 'sylow.dev',
+            authoritative: true,
+            keypair: {
+              public: 'xxxxx',
+              private: 'xxxxx'
+            }
+          };
+          const newServer = new this(datas);
+          return newServer.save()
+            .then(savedServer => savedServer)
+            .catch(err => Promise.reject(err));
+        }
+        return null;
+      });
   }
 };
 
