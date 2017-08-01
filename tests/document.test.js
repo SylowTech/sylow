@@ -14,7 +14,7 @@ describe('## Document APIs', () => {
   const contentType2 = 'contentType2';
 
   let document = {
-    contentType: 'contentType2',
+    contentType: contentType2,
     public: true,
     encryption: 'plain',
     data: {
@@ -42,7 +42,7 @@ describe('## Document APIs', () => {
   };
 
   let document2 = {
-    contentType: contentType2,
+    contentType: contentType1,
     public: true,
     encryption: 'plain',
     data: {
@@ -257,7 +257,7 @@ describe('## Document APIs', () => {
     });
 
     it('should get documents list according to the document tags', (done) => {
-      const tags = { 'tagkey4' : 'tagvalue4' };
+      const tags = { tagkey4: 'tagvalue4' };
 
       request(app)
         .get('/api/documents')
