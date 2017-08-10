@@ -5,7 +5,7 @@ block dashboard
   div(class="ui relaxed divided list")
     form(id="edit_settings_form" method="POST" action="settings")
       each val, key in settings
-        div(class='content dividing header field')
+        div(class=`content dividing header field ${key}`)
           - key_label = key.replace(/([A-Z])/g, ' $1').replace(/^./, function(str) { return str.toUpperCase(); });
           h3(class="ui header")= key_label
                    
