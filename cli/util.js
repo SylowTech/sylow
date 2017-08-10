@@ -15,7 +15,7 @@ module.exports = {
     // plugin bluebird promise in mongoose
     mongoose.Promise = Promise;
 
-    const myEnv = dotenv.config({ path: '../.env' });
+    const myEnv = dotenv.config();
     dotenvExpand(myEnv);
     const envConfig = Object.create(myEnv.parsed);
 
