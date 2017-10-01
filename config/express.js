@@ -125,7 +125,7 @@ if (config.env !== 'test') {
 }
 
 // error handler, send stacktrace only during development
-app.use((err, req, res, next) => {
+app.use((err, req, res) => {
   // eslint-disable-line no-unused-vars
   if (err.returnType === 'json') {
     return res.status(err.status).json({
