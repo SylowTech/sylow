@@ -11,7 +11,7 @@ import LoginController from './controllers/login.controller';
 
 // import images so webpack will include them
 import './assets/images/logo-purple.svg';
-import './assets/images/favicon-16x16.png';
+import './assets/images/favicon.ico';
 
 const controllers = {
   client: ClientController,

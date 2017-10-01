@@ -65,7 +65,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 // // set up favicon middleware
-app.use(favicon(path.join(__dirname, '..', 'admin', 'assets', 'favicon-16x16.png')));
+app.use(favicon(path.join(__dirname, '..', 'admin', 'assets', 'favicon.ico')));
 
 // set up view templates
 app.set('views', path.join(__dirname, '../admin/views'));
