@@ -11,13 +11,13 @@ import LoginController from './controllers/login.controller';
 
 // import images so webpack will include them
 import './assets/images/logo-purple.svg';
+import './assets/images/favicon.ico';
 
 const controllers = {
   client: ClientController,
   entity: EntityController,
   login: LoginController
 };
-
 
 $(() => {
   const appCtrl = new AppController();
@@ -26,7 +26,7 @@ $(() => {
 
   const ctrlName = $('body').data('controller');
   if (ctrlName && ctrlName in controllers) {
-    console.log(`Registering controller: ${ctrlName}`);  // eslint-disable-line no-console
+    console.log(`Registering controller: ${ctrlName}`); // eslint-disable-line no-console
     const ctrl = new controllers[ctrlName](appCtrl);
     appCtrl.registerActions(ctrl);
     ctrl.init();

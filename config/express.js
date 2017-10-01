@@ -10,6 +10,7 @@ import expressFlash from 'express-flash';
 import expressSession from 'express-session';
 import expressWinston from 'express-winston';
 import expressValidation from 'express-validation';
+import favicon from 'serve-favicon';
 import passport from 'passport';
 import helmet from 'helmet';
 import path from 'path';
@@ -35,14 +36,15 @@ app.use(cookieParser());
 app.use(compress());
 app.use(methodOverride());
 
-app.use(expressSession({
-  secret: config.sessionSecret,
-  resave: false,
-  saveUninitialized: true,
-}));
+app.use(
+  expressSession({
+    secret: config.sessionSecret,
+    resave: false,
+    saveUninitialized: true
+  })
+);
 app.use(passport.initialize());
 app.use(passport.session());
-
 
 // secure apps by setting various HTTP headers
 app.use(helmet());
@@ -51,11 +53,19 @@ app.use(helmet());
 const corsOptions = {
   origin: '*',
   allowedHeaders: [
-    'Content-Type', 'Count', 'ETag', 'Link', 'Server-Authorization', 'WWW-Authenticate'
+    'Content-Type',
+    'Count',
+    'ETag',
+    'Link',
+    'Server-Authorization',
+    'WWW-Authenticate'
   ],
   maxAge: 2592000
 };
 app.use(cors(corsOptions));
+
+// // set up favicon middleware
+app.use(favicon(path.join(__dirname, '..', 'admin', 'assets', 'favicon.ico')));
 
 // set up view templates
 app.set('views', path.join(__dirname, '../admin/views'));
@@ -65,13 +75,15 @@ app.set('view engine', 'pug');
 if (config.env === 'development') {
   expressWinston.requestWhitelist.push('body');
   expressWinston.responseWhitelist.push('body');
-  app.use(expressWinston.logger({
-    winstonInstance,
-    meta: true, // optional: log meta data about request (defaults to true)
-    msg: 'HTTP {{req.method}} {{req.url}} {{res.statusCode}} {{res.responseTime}}ms',
-    colorStatus: true, // Color the status code (default green, 3XX cyan, 4XX yellow, 5XX red).
-    ignoreRoutes: ['/assets']
-  }));
+  app.use(
+    expressWinston.logger({
+      winstonInstance,
+      meta: true, // optional: log meta data about request (defaults to true)
+      msg: 'HTTP {{req.method}} {{req.url}} {{res.statusCode}} {{res.responseTime}}ms',
+      colorStatus: true, // Color the status code (default green, 3XX cyan, 4XX yellow, 5XX red).
+      ignoreRoutes: ['/assets']
+    })
+  );
 }
 
 // mount api routes on /api path
@@ -105,13 +117,16 @@ app.use((req, res, next) => {
 
 // log error in winston transports except when executing test suite
 if (config.env !== 'test') {
-  app.use(expressWinston.errorLogger({
-    winstonInstance
-  }));
+  app.use(
+    expressWinston.errorLogger({
+      winstonInstance
+    })
+  );
 }
 
 // error handler, send stacktrace only during development
-app.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
+app.use((err, req, res) => {
+  // eslint-disable-line no-unused-vars
   if (err.returnType === 'json') {
     return res.status(err.status).json({
       message: err.isPublic ? err.message : httpStatus[err.status],

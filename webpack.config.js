@@ -3,7 +3,6 @@ const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const packageData = require('./package.json');
 
-
 module.exports = {
   entry: {
     admin: ['./admin/app.js', './admin/assets/admin.scss'],
@@ -30,7 +29,7 @@ module.exports = {
           loader: [
             { loader: 'css-loader', options: { minimize: true, sourceMap: true } },
             { loader: 'sass-loader' }
-          ],
+          ]
         })
       },
       {
@@ -41,7 +40,7 @@ module.exports = {
         })
       },
       {
-        test: /\.(png|woff|woff2|eot|ttf|svg)(\?|$)/,
+        test: /\.(png|woff|woff2|eot|ttf|svg|ico)(\?|$)/,
         use: {
           loader: 'file-loader',
           options: { name: '[name].[ext]' }
@@ -53,18 +52,18 @@ module.exports = {
     new webpack.ProvidePlugin({ $: 'jquery', jQuery: 'jquery' }),
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
-      filename: 'vendor.bundle.min.js',
+      filename: 'vendor.bundle.min.js'
     }),
     new ExtractTextPlugin({
       filename: '[name].min.css',
-      allChunks: true,
+      allChunks: true
     }),
     new webpack.optimize.UglifyJsPlugin({
       compress: {
         warnings: false,
-        drop_console: false,
+        drop_console: false
       },
       sourceMap: true
-    }),
+    })
   ]
 };

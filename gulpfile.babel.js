@@ -11,40 +11,43 @@ const plugins = gulpLoadPlugins();
 
 const paths = {
   js: ['./**/*.js', '!admin/**', '!dist/**', '!node_modules/**', '!coverage/**'],
-  frontend: ['./admin/**/*.js', './admin/assets/**/*.scss'],
+  frontend: ['./admin/**/*.js', './admin/assets/**/*.scss', './admin/assets/images/*.ico'],
   nonJs: ['./**/*.pug', './package.json', './.gitignore', './.env'],
   tests: './server/tests/*.js'
 };
 
 // Clean up dist and coverage directory
-gulp.task('clean', () =>
-  del.sync(['dist/**', 'dist/.*', 'coverage/**', '!dist', '!coverage'])
-);
+gulp.task('clean', () => del.sync(['dist/**', 'dist/.*', 'coverage/**', '!dist', '!coverage']));
 
 // Copy non-js files to dist
 gulp.task('copy', () =>
-  gulp.src(paths.nonJs)
+  gulp
+    .src(paths.nonJs)
     .pipe(plugins.newer('dist'))
     .pipe(gulp.dest('dist'))
 );
 
 // Compile ES6 to ES5 and copy to dist
 gulp.task('babel', () =>
-  gulp.src([...paths.js, '!gulpfile.babel.js', '!webpack.config.js'], { base: '.' })
+  gulp
+    .src([...paths.js, '!gulpfile.babel.js', '!webpack.config.js'], { base: '.' })
     .pipe(plugins.newer('dist'))
     .pipe(plugins.sourcemaps.init())
     .pipe(plugins.babel())
-    .pipe(plugins.sourcemaps.write('.', {
-      includeContent: false,
-      sourceRoot(file) {
-        return path.relative(file.path, __dirname);
-      }
-    }))
+    .pipe(
+      plugins.sourcemaps.write('.', {
+        includeContent: false,
+        sourceRoot(file) {
+          return path.relative(file.path, __dirname);
+        }
+      })
+    )
     .pipe(gulp.dest('dist'))
 );
 
 gulp.task('build:frontend', () =>
-  gulp.src([...paths.frontend])
+  gulp
+    .src([...paths.frontend])
     .pipe(webpackStream(webpackConfig, webpack))
     .pipe(gulp.dest('dist/admin/assets'))
 );
@@ -67,7 +70,5 @@ gulp.task('serve', ['clean'], () => runSequence('nodemon'));
 
 // default task: clean dist, compile js files and copy non-js files.
 gulp.task('default', ['clean'], () => {
-  runSequence(
-    ['build:frontend', 'copy', 'babel']
-  );
+  runSequence(['build:frontend', 'copy', 'babel']);
 });
