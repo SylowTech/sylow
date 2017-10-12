@@ -2,7 +2,7 @@
 	"variables": [],
 	"info": {
 		"name": "Sylow",
-		"_postman_id": "6501a19b-6466-6dc9-e178-1782c8d2bbad",
+		"_postman_id": "7177a800-2736-12be-596a-6e74dde5e628",
 		"description": "",
 		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
 	},
@@ -17,11 +17,16 @@
 						"key": "Content-Type",
 						"value": "application/json",
 						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer Al337wKjEB97KR1eIVRcR9p3cEbeTjzXzWbvy7IrIaIhN1xzBmT5IVSagQZiIN6jI7OhDvHsIiYOvpOuKxYYjl1zu0UNkTidApxGIzOar800FUwcK677qgdYZCrM9W19QMNXn3gQO68S0WbGsBWJZr94yeYltCxHfmdizZioivjub25MXMZgH7buJf0whNMg0RPgboocpF2qLeg1cZDQEgalgg4zNb7GyMByyjiQZhZJFJA1Rzwyhvb958upfkC8",
+						"description": ""
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"entityName\": \"testuser@testdomain.xyz\",\n\t\"passwordHash\": \"testpass\",\n\t\"passwordSalt\": \"xxxxxx\",\n\t\"keypair\": {\n\t\t\"public\": \"xxxxxx\"\n\t},\n\t\"authoritative\": true\n}"
+					"raw": "{\n\t\"entityName\": \"alice@sylow.xy\",\n\t\"passwordHash\": \"passHash\",\n\t\"passwordSalt\": \"xxxxxx\",\n\t\"keypair\": {\n\t\t\"public\": \"xxxxxx\"\n\t},\n\t\"authoritative\": true\n}"
 				},
 				"description": "Create an entity (user) with the Sylow server. Use this entity to authorize your requests to the admin interface, or in the first step of the OAuth2 authorization flow for other API endpoints."
 			},
@@ -37,11 +42,16 @@
 						"key": "Content-Type",
 						"value": "application/json",
 						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer Al337wKjEB97KR1eIVRcR9p3cEbeTjzXzWbvy7IrIaIhN1xzBmT5IVSagQZiIN6jI7OhDvHsIiYOvpOuKxYYjl1zu0UNkTidApxGIzOar800FUwcK677qgdYZCrM9W19QMNXn3gQO68S0WbGsBWJZr94yeYltCxHfmdizZioivjub25MXMZgH7buJf0whNMg0RPgboocpF2qLeg1cZDQEgalgg4zNb7GyMByyjiQZhZJFJA1Rzwyhvb958upfkC8",
+						"description": ""
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"entityId\": \"eb904e0b-27ea-4414-8aeb-9e214c0b2135\",\n\t\"clientName\": \"Postman\",\n\t\"clientId\": \"postman\",\n\t\"clientSecret\": \"xxxxxx\",\n\t\"deviceType\": \"other\",\n\t\"redirectUri\": \"https://www.getpostman.com/oauth2/callback\"\n}"
+					"raw": "{\n\t\"clientName\": \"sylowClient\",\n\t\"clientId\": \"sylow\",\n\t\"clientSecret\": \"xxxxxx\",\n\t\"deviceType\": \"other\",\n\t\"redirectUri\": \"https://www.getpostman.com/oauth2/callback\"\n}"
 				},
 				"description": "Create a client application that can be used in the OAuth2 authorization flow to gain access to protected API endpoints."
 			},
@@ -53,10 +63,394 @@
 				"url": "http://localhost:4040/api/auth/random-number",
 				"method": "GET",
 				"header": [],
-				"body": {},
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
 				"description": "Tests OAuth2 authorization flow. After creating a client and entity, use Postman to create an OAuth2 access token using the following parameters:\n\n* Auth URL: `http://localhost:4040/authorize`\n* Access Token URL: `http://localhost:4040/token`\n* Client ID: `postman`\n* Client Secret: `xxxxxx`\n* Grant Type: Authorization Code\n* Request access token locally"
 			},
 			"response": []
+		},
+		{
+			"name": "Create Document I",
+			"request": {
+				"url": "http://localhost:4040/api/documents",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer 7zOyT6I3FpPJUNoWYPADwPqDOphpY91j3AI9OnS5duQlFLsEy5Q42eVLVUh1YyQZOYeqxlN4rjQsHHdjeO2YIswNMOqCHt1gFAir48mTbbCe5vWJWsgz2KpBDgmVQ2Hom05IxUdOHDR968LjhZQyRGw9lqZe1qxuOISox9Kg9k2XA0TCEskbG58jCHScgK7pCrvc5hTKvVuEDktWJHBBISefdcViLIg6NkbL29IJ46SBvsKpXPF7KlcrNLZo9cnu",
+						"description": ""
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n        \"contentType\": \"theContentType\",\n        \"entityId\": \"<anEntityId>\",\n        \"data\": {\n            \"content\": \"Sylow document sample\"\n        },\n        \"tags\": {\n            \"activity\": \"work\",\n            \"list\": \"todo\"\n        },\n        \"summary\": {\n            \"encoding\": \"plain\",\n            \"contentType\": \"text/plain\"\n        },\n        \"encryption\": \"base64\",\n        \"diffed\": false,\n        \"public\": false\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Create Document II",
+			"request": {
+				"url": "http://localhost:4040/api/files",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer Al337wKjEB97KR1eIVRcR9p3cEbeTjzXzWbvy7IrIaIhN1xzBmT5IVSagQZiIN6jI7OhDvHsIiYOvpOuKxYYjl1zu0UNkTidApxGIzOar800FUwcK677qgdYZCrM9W19QMNXn3gQO68S0WbGsBWJZr94yeYltCxHfmdizZioivjub25MXMZgH7buJf0whNMg0RPgboocpF2qLeg1cZDQEgalgg4zNb7GyMByyjiQZhZJFJA1Rzwyhvb958upfkC8",
+						"description": ""
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n        \"contentType\": \"anotherContentType\",\n        \"entityId\": \"<anotherEntityId>\",\n        \"data\": {\n            \"content\": \"Sylow document sample II\"\n        },\n        \"tags\": {\n            \"activity\": \"hobby\",\n            \"thing\": \"idea\"\n        },\n        \"summary\": {\n            \"encoding\": \"plain\",\n            \"contentType\": \"text/plain\"\n        },\n        \"encryption\": \"base64\",\n        \"diffed\": false,\n        \"public\": true\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Create File",
+			"request": {
+				"url": "http://localhost:4040/api/files",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer Al337wKjEB97KR1eIVRcR9p3cEbeTjzXzWbvy7IrIaIhN1xzBmT5IVSagQZiIN6jI7OhDvHsIiYOvpOuKxYYjl1zu0UNkTidApxGIzOar800FUwcK677qgdYZCrM9W19QMNXn3gQO68S0WbGsBWJZr94yeYltCxHfmdizZioivjub25MXMZgH7buJf0whNMg0RPgboocpF2qLeg1cZDQEgalgg4zNb7GyMByyjiQZhZJFJA1Rzwyhvb958upfkC8",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "{{fileCode}}",
+							"description": "",
+							"type": "file",
+							"src": "package.json"
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": [
+				{
+					"id": "6bd525dc-19fc-488c-a49e-59077768ed1c",
+					"name": "Create File",
+					"originalRequest": {
+						"url": "http://localhost:4040/api/files/",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer Al337wKjEB97KR1eIVRcR9p3cEbeTjzXzWbvy7IrIaIhN1xzBmT5IVSagQZiIN6jI7OhDvHsIiYOvpOuKxYYjl1zu0UNkTidApxGIzOar800FUwcK677qgdYZCrM9W19QMNXn3gQO68S0WbGsBWJZr94yeYltCxHfmdizZioivjub25MXMZgH7buJf0whNMg0RPgboocpF2qLeg1cZDQEgalgg4zNb7GyMByyjiQZhZJFJA1Rzwyhvb958upfkC8",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "test",
+									"description": "",
+									"type": "file",
+									"src": {
+										"0": {}
+									}
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"_postman_previewtype": "text",
+					"header": [
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*",
+							"name": "Access-Control-Allow-Origin",
+							"description": "Specifies a URI that may access the resource. For requests without credentials, the server may specify '*' as a wildcard, thereby allowing any origin to access the resource."
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive",
+							"name": "Connection",
+							"description": "Options that are desired for the connection"
+						},
+						{
+							"key": "Content-Length",
+							"value": "94",
+							"name": "Content-Length",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 08 Oct 2017 10:09:17 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"5e-in/kuQ/MxxEUZutBjvZUiQ\"",
+							"name": "ETag",
+							"description": "An identifier for a specific version of a resource, often a message digest"
+						},
+						{
+							"key": "Sylow-ServerID",
+							"value": "sylow.dev",
+							"name": "Sylow-ServerID",
+							"description": "Custom header"
+						},
+						{
+							"key": "Vary",
+							"value": "X-HTTP-Method-Override, Accept-Encoding",
+							"name": "Vary",
+							"description": "Tells downstream proxies how to match future request headers to decide whether the cached response can be used rather than requesting a fresh one from the origin server."
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff",
+							"name": "X-Content-Type-Options",
+							"description": "The only defined value, \"nosniff\", prevents Internet Explorer from MIME-sniffing a response away from the declared content-type"
+						},
+						{
+							"key": "X-DNS-Prefetch-Control",
+							"value": "off",
+							"name": "X-DNS-Prefetch-Control",
+							"description": "Custom header"
+						},
+						{
+							"key": "X-Download-Options",
+							"value": "noopen",
+							"name": "X-Download-Options",
+							"description": "Custom header"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "SAMEORIGIN",
+							"name": "X-Frame-Options",
+							"description": "Clickjacking protection: \"deny\" - no rendering within a frame, \"sameorigin\" - no rendering if origin mismatch"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "1; mode=block",
+							"name": "X-XSS-Protection",
+							"description": "Cross-site scripting (XSS) filter"
+						}
+					],
+					"cookie": [
+						{
+							"expires": "Tue Jan 19 2038 04:14:07 GMT+0100 (CET)",
+							"httpOnly": true,
+							"domain": "localhost",
+							"path": "/",
+							"secure": false,
+							"value": "s%3ATeOAKPsMQUOPwDDBuGSzRpQNQcl5BLc0.KH9JoYtBhhsU2AS8oBORNx3cHePBi51r%2Fb5hpPgt7Co",
+							"key": "connect.sid"
+						}
+					],
+					"responseTime": 55,
+					"body": "{\"url\":\"/api/files/09fbc044-3237-4476-93d6-cdf4a3e283da/45913277-df0c-41cf-8aa7-0d5de803b39b\"}"
+				}
+			]
+		},
+		{
+			"name": "Upload FIle",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"let url;",
+							"pm.sendRequest({",
+							"    url: \"localhost:4040/api/files\", ",
+							"    method: \"POST\",",
+							"    header: {",
+							"        'Authorization': 'Bearer Al337wKjEB97KR1eIVRcR9p3cEbeTjzXzWbvy7IrIaIhN1xzBmT5IVSagQZiIN6jI7OhDvHsIiYOvpOuKxYYjl1zu0UNkTidApxGIzOar800FUwcK677qgdYZCrM9W19QMNXn3gQO68S0WbGsBWJZr94yeYltCxHfmdizZioivjub25MXMZgH7buJf0whNMg0RPgboocpF2qLeg1cZDQEgalgg4zNb7GyMByyjiQZhZJFJA1Rzwyhvb958upfkC8'",
+							"    }",
+							"},",
+							"    function (err, response) {",
+							"    url = response.json().url;",
+							"    arr_url = url.split(\"/\");",
+							"    fileCode = arr_url[4];",
+							"    pm.globals.set(\"fileCode\", fileCode);",
+							"    pm.globals.set(\"url\", url);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:4040/{{url}}",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer Al337wKjEB97KR1eIVRcR9p3cEbeTjzXzWbvy7IrIaIhN1xzBmT5IVSagQZiIN6jI7OhDvHsIiYOvpOuKxYYjl1zu0UNkTidApxGIzOar800FUwcK677qgdYZCrM9W19QMNXn3gQO68S0WbGsBWJZr94yeYltCxHfmdizZioivjub25MXMZgH7buJf0whNMg0RPgboocpF2qLeg1cZDQEgalgg4zNb7GyMByyjiQZhZJFJA1Rzwyhvb958upfkC8",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"description": "",
+							"type": "file",
+							"src": "package.json"
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": [
+				{
+					"id": "f9fddd28-79c9-4131-9b74-c2801d03f7d5",
+					"name": "Create File",
+					"originalRequest": {
+						"url": "http://localhost:4040/api/files/",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer Al337wKjEB97KR1eIVRcR9p3cEbeTjzXzWbvy7IrIaIhN1xzBmT5IVSagQZiIN6jI7OhDvHsIiYOvpOuKxYYjl1zu0UNkTidApxGIzOar800FUwcK677qgdYZCrM9W19QMNXn3gQO68S0WbGsBWJZr94yeYltCxHfmdizZioivjub25MXMZgH7buJf0whNMg0RPgboocpF2qLeg1cZDQEgalgg4zNb7GyMByyjiQZhZJFJA1Rzwyhvb958upfkC8",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "test",
+									"description": "",
+									"type": "file",
+									"src": {
+										"0": {}
+									}
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"_postman_previewtype": "text",
+					"header": [
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*",
+							"name": "Access-Control-Allow-Origin",
+							"description": "Specifies a URI that may access the resource. For requests without credentials, the server may specify '*' as a wildcard, thereby allowing any origin to access the resource."
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive",
+							"name": "Connection",
+							"description": "Options that are desired for the connection"
+						},
+						{
+							"key": "Content-Length",
+							"value": "94",
+							"name": "Content-Length",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 08 Oct 2017 10:09:17 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"5e-in/kuQ/MxxEUZutBjvZUiQ\"",
+							"name": "ETag",
+							"description": "An identifier for a specific version of a resource, often a message digest"
+						},
+						{
+							"key": "Sylow-ServerID",
+							"value": "sylow.dev",
+							"name": "Sylow-ServerID",
+							"description": "Custom header"
+						},
+						{
+							"key": "Vary",
+							"value": "X-HTTP-Method-Override, Accept-Encoding",
+							"name": "Vary",
+							"description": "Tells downstream proxies how to match future request headers to decide whether the cached response can be used rather than requesting a fresh one from the origin server."
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff",
+							"name": "X-Content-Type-Options",
+							"description": "The only defined value, \"nosniff\", prevents Internet Explorer from MIME-sniffing a response away from the declared content-type"
+						},
+						{
+							"key": "X-DNS-Prefetch-Control",
+							"value": "off",
+							"name": "X-DNS-Prefetch-Control",
+							"description": "Custom header"
+						},
+						{
+							"key": "X-Download-Options",
+							"value": "noopen",
+							"name": "X-Download-Options",
+							"description": "Custom header"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "SAMEORIGIN",
+							"name": "X-Frame-Options",
+							"description": "Clickjacking protection: \"deny\" - no rendering within a frame, \"sameorigin\" - no rendering if origin mismatch"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "1; mode=block",
+							"name": "X-XSS-Protection",
+							"description": "Cross-site scripting (XSS) filter"
+						}
+					],
+					"cookie": [
+						{
+							"expires": "Tue Jan 19 2038 04:14:07 GMT+0100 (CET)",
+							"httpOnly": true,
+							"domain": "localhost",
+							"path": "/",
+							"secure": false,
+							"value": "s%3ATeOAKPsMQUOPwDDBuGSzRpQNQcl5BLc0.KH9JoYtBhhsU2AS8oBORNx3cHePBi51r%2Fb5hpPgt7Co",
+							"key": "connect.sid"
+						}
+					],
+					"responseTime": 55,
+					"body": "{\"url\":\"/api/files/09fbc044-3237-4476-93d6-cdf4a3e283da/45913277-df0c-41cf-8aa7-0d5de803b39b\"}"
+				}
+			]
 		}
 	]
 }
